@@ -18,7 +18,7 @@ import webapp2
 import json
 import urllib
 import re
-import oauth2
+# import oauth2
 
 
 class MainHandler(webapp2.RequestHandler):
@@ -32,12 +32,34 @@ class MainHandler(webapp2.RequestHandler):
             "level": "DEFAULT"
           }
         }        
-        self.yelp_search
+        # self.yelp_search
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(glass))
     
+    """ Fetches IP Address Information.
+        
+        Retrieves location information latitude, longitude, city, zip code
+        and requires a string input of an IP address.
+    
+        Args:
+            ip_address: String IP Address. For example:
+            
+            "107.212.24.150"
+        
+        Returns:
+            A JSON dump of address information with the following keys:
+            city, lat, long, zip. For example:
+            
+            { 
+              \"lat\": \"37.33939\", 
+              \"city\": \"SAN JOSE\", 
+              \"zip\": \"95101\", 
+              \"long\": \"-121.89496\"
+            }
+    
+        """
     def getAddressInfo(self, ip_address):
-      ip_address = '107.212.24.150'
+      # ip_address = '107.212.24.150'
       url = 'http://ipinfodb.com/ip_locator.php?ip=' + ip_address
       url_file = urllib.urlopen(url)
       contents = url_file.read()
@@ -51,28 +73,30 @@ class MainHandler(webapp2.RequestHandler):
       for item in address_info:
         address_info[item] = address_info[item].group(1)
       return json.dumps(address_info)
+    
+    
         
-    def yelp_search(self):
-      consumer_key = '4zRvW-MqSSovi-GTT52r4Q'
-      consumer_secret = 'FW4qaexJchzvcCxyKF_dqSwp20o'
-      token = 'kjOUF5dhJXRy8CcLdcBbZzwBa5MfaFSt'
-      token_secret = 'lI5vkmFN7ttioutaGiQehO9PGZY'
-      
-      consumer = oauth2.Consumer(consumer_key, consumer_secret)
-      url = 'http://api.yelp.com/v2/search?term=bars&location=sf'
-
-      print 'URL: %s' % (url,)
-
-      oauth_request = oauth2.Request('GET', url, {})
-      oauth_request.update({'oauth_nonce': oauth2.generate_nonce(),
-                            'oauth_timestamp': oauth2.generate_timestamp(),
-                            'oauth_token': token,
-                            'oauth_consumer_key': consumer_key})
-
-      token = oauth2.Token(token, token_secret)
-      oauth_request.sign_request(oauth2.SignatureMethod_HMAC_SHA1(), consumer, token)
-      signed_url = oauth_request.to_url()
-      print 'Signed URL: %s' % (signed_url,)
+#    def yelp_search(self):
+#      consumer_key = '4zRvW-MqSSovi-GTT52r4Q'
+#      consumer_secret = 'FW4qaexJchzvcCxyKF_dqSwp20o'
+#      token = 'kjOUF5dhJXRy8CcLdcBbZzwBa5MfaFSt'
+#      token_secret = 'lI5vkmFN7ttioutaGiQehO9PGZY'
+#      
+#      consumer = oauth2.Consumer(consumer_key, consumer_secret)
+#      url = 'http://api.yelp.com/v2/search?term=bars&location=sf'
+#
+#      print 'URL: %s' % (url,)
+#
+#      oauth_request = oauth2.Request('GET', url, {})
+#      oauth_request.update({'oauth_nonce': oauth2.generate_nonce(),
+#                            'oauth_timestamp': oauth2.generate_timestamp(),
+#                            'oauth_token': token,
+#                            'oauth_consumer_key': consumer_key})
+#
+#      token = oauth2.Token(token, token_secret)
+#      oauth_request.sign_request(oauth2.SignatureMethod_HMAC_SHA1(), consumer, token)
+#      signed_url = oauth_request.to_url()
+#      print 'Signed URL: %s' % (signed_url,)
       
 
 app = webapp2.WSGIApplication([
