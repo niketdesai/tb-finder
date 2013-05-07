@@ -16,6 +16,7 @@
 #
 import webapp2
 import json
+import oauth2
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -27,8 +28,32 @@ class MainHandler(webapp2.RequestHandler):
             "level": "DEFAULT"
           }
         }        
+        self.yelp_search
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(glass))
+        
+    def yelp_search(self):
+      consumer_key = '4zRvW-MqSSovi-GTT52r4Q'
+      consumer_secret = 'FW4qaexJchzvcCxyKF_dqSwp20o'
+      token = 'kjOUF5dhJXRy8CcLdcBbZzwBa5MfaFSt'
+      token_secret = 'lI5vkmFN7ttioutaGiQehO9PGZY'
+      
+      consumer = oauth2.Consumer(consumer_key, consumer_secret)
+      url = 'http://api.yelp.com/v2/search?term=bars&location=sf'
+
+      print 'URL: %s' % (url,)
+
+      oauth_request = oauth2.Request('GET', url, {})
+      oauth_request.update({'oauth_nonce': oauth2.generate_nonce(),
+                            'oauth_timestamp': oauth2.generate_timestamp(),
+                            'oauth_token': token,
+                            'oauth_consumer_key': consumer_key})
+
+      token = oauth2.Token(token, token_secret)
+      oauth_request.sign_request(oauth2.SignatureMethod_HMAC_SHA1(), consumer, token)
+      signed_url = oauth_request.to_url()
+      print 'Signed URL: %s' % (signed_url,)
+      
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
