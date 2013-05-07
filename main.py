@@ -20,11 +20,11 @@ import json
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         glass = {
-          "text": "This item auto-resizes according to the text length",
+          "html": "<article>\n  <section>\n    <div class=\"layout-figure\">\n      <div class=\"align-center\">\n        <p class=\"text-x-large\">YOU</p>\n        <img src=\"http://pinkgirlq8.com/wp-content/uploads/taco-bell.png\" width=\"50\" height=\"60\">\n        <p class=\"text-x-large\">TB</p>\n      </div>\n      <div>\n        <div class=\"text-normal\">\n          <p>720 Story Road</p>\n          <p>San Jose, CA</p>\n          <p class=\"green\">Open</p>\n        </div>\n      </div>\n    </div>\n  </section>\n</article>\n",
           "notification": {
             "level": "DEFAULT"
           }
-        }
+        }        
         self.response.write(json.dumps(glass))
 
 app = webapp2.WSGIApplication([
