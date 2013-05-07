@@ -15,10 +15,17 @@
 # limitations under the License.
 #
 import webapp2
+import json
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('I want TB bitch')
+        glass = {
+          "text": "This item auto-resizes according to the text length",
+          "notification": {
+            "level": "DEFAULT"
+          }
+        }
+        self.response.write(json.dumps(glass))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
